@@ -34,14 +34,4 @@ then
     wait_for "${POSTGRES_HOST:q}" "${POSTGRES_PORT:q}"
 fi
 
-if check_vars REDIS_HOST REDIS_PORT;
-then
-    wait_for "${REDIS_HOST:q}" "${REDIS_PORT:q}"
-fi
-
-if check_vars RABBITMQ_HOST RABBITMQ_PORT;
-then
-    wait_for "${RABBITMQ_HOST:q}" "${RABBITMQ_PORT:q}"
-fi
-
 exec "$@"

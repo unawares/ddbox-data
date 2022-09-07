@@ -6,10 +6,28 @@ install: ## install
 	poetry install
 
 dev.start: install ## start
-	poetry run uvicorn src.app.main:app --host 0.0.0.0 --port 8000 --reload
+	poetry run uvicorn app.main:app --app-dir=./src --host 0.0.0.0 --port 8000 --reload
 
 requirements.txt: install ## generate requirements.txt
 	poetry export -f requirements.txt --output requirements.txt
+
+docker.compose.build: requirements.txt  ## docker compose build
+	docker compose build
+
+docker.compose.up: docker.compose.build ## docker compose up
+	docker compose up
+
+docker.compose.up.d: docker.compose.build ## docker compose up -d
+	docker compose up -d
+
+docker.compose.down: ## docker compose down
+	docker compose down
+
+docker.compose.down.volumes: requirements.txt ## docker compose down -v
+	docker compose down -v
+
+docker.compose.run.bash.%: docker.compose.build ## docker compose run <service-name> bash
+	docker compose run $* bash
 
 # Flags
 

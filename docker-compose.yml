@@ -1,0 +1,58 @@
+version: '3.9'
+
+
+networks:
+  local-network: {}
+
+
+volumes:
+  local-postgres-data: {}
+  local-redis-data: {}
+
+
+x-shared-environment: &shared-environment
+  ENV: "DEV"
+  POSTGRES_HOST: "local-postgres"
+  POSTGRES_PORT: "5432"
+
+
+x-base-image: &base-image
+  restart: always
+  environment:
+    <<: *shared-environment
+  networks:
+    local-network: {}
+  logging:
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+
+services:
+  local-postgres:
+    <<: *base-image
+    image: "postgres:14.1-alpine"
+    hostname: local-postgres
+    volumes:
+      - local-postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: 'db-name'
+      POSTGRES_USER: 'db-user'
+      POSTGRES_PASSWORD: 'db-pass'
+  
+  local-main: &local-image
+    <<: *base-image
+    image: local-main
+    hostname: local-main
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PYTHON_VERSION=3.9
+    volumes:
+      - ./src:/app/src
+    command: start.sh
+    ports:
+      - 8000:8000
+    depends_on:
+      - local-postgres
