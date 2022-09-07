@@ -26,7 +26,7 @@ docker.compose.up.d: docker.compose.build ## docker compose up -d
 docker.compose.down: ## docker compose down
 	docker compose down
 
-docker.compose.down.volumes: requirements.txt ## docker compose down -v
+docker.compose.down.volumes: ## docker compose down -v
 	docker compose down -v
 
 docker.compose.run.bash.%: docker.compose.build ## docker compose run <service-name> bash
