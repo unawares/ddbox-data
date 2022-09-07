@@ -19,10 +19,9 @@ repos:
       - id: check-docstring-first
       - id: check-json
       - id: check-yaml
-        exclude: (charts/*|.gitlab-ci.yml)
+        exclude: (charts/.*|.gitlab-ci.yml)
       - id: requirements-txt-fixer
       - id: detect-private-key
-      - id: flake8
   - repo: https://github.com/asottile/seed-isort-config
     rev: v2.2.0
     hooks:

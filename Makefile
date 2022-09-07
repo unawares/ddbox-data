@@ -5,6 +5,9 @@ help: ## display this help message
 install: ## install
 	poetry install
 
+init: install ## init
+	poetry run pre-commit install
+
 dev.start: install ## start
 	poetry run uvicorn app.main:app --app-dir=./src --host 0.0.0.0 --port 8000 --reload
 
