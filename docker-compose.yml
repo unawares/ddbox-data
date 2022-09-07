@@ -2,17 +2,17 @@ version: '3.9'
 
 
 networks:
-  local-network: {}
+  default: {}
 
 
 volumes:
-  local-postgres-data: {}
-  local-redis-data: {}
+  postgres-data: {}
+  redis-data: {}
 
 
 x-shared-environment: &shared-environment
   ENV: "DEV"
-  POSTGRES_HOST: "local-postgres"
+  POSTGRES_HOST: "postgres"
   POSTGRES_PORT: "5432"
 
 
@@ -21,7 +21,7 @@ x-base-image: &base-image
   environment:
     <<: *shared-environment
   networks:
-    local-network: {}
+    default: {}
   logging:
     options:
       max-size: "10m"
@@ -29,21 +29,20 @@ x-base-image: &base-image
 
 
 services:
-  local-postgres:
+  postgres:
     <<: *base-image
     image: "postgres:14.1-alpine"
-    hostname: local-postgres
+    hostname: postgres
     volumes:
-      - local-postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: 'db-name'
       POSTGRES_USER: 'db-user'
       POSTGRES_PASSWORD: 'db-pass'
   
-  local-main: &local-image
+  app: &app
     <<: *base-image
-    image: local-main
-    hostname: local-main
+    hostname: app
     build:
       context: .
       dockerfile: Dockerfile
@@ -55,4 +54,4 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      - local-postgres
+      - postgres
