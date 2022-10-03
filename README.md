@@ -50,7 +50,7 @@ make docker.compose.up
 include:
   - project: 'ndfs/templates/gitlab-ci'
     ref: main
-    file: 'service-fast-api.gitlab-ci.yml'
+    file: 'service-fastapi.gitlab-ci.yml'
 
 deployer-kubernetes:
   variables:
