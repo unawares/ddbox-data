@@ -5,7 +5,7 @@ case "$ENV" in
     uvicorn app.main:app --app-dir=./src --host 0.0.0.0 --port 8000 --reload
     ;;
 "PRODUCTION")
-    uvicorn app.main:app --app-dir=./src --host 0.0.0.0 --port 8000 --proxy-headers --workers 5 # workers = (2*CPU)+1
+    gunicorn app.main:app --chdir=./src --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --workers 5  # workers = (2*CPU)+1
     ;;
 *)
     echo "NO ENV SPECIFIED!"
