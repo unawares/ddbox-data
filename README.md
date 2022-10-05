@@ -41,10 +41,10 @@ Run the development server using docker compose (the server is accessible at [ht
 make docker.compose.up
 ```
 
-## Deploy into production
+## Deployment
 
-1. Add Gitlab CI Variable `AWS_ECR_REPOSITORY_NAME` for AWS ECR initialization on CI/CD.
-2. Add `helm/values.yaml` to set up service configs for Kubernetes deployment (e.g. [values.yaml](https://git.ndfs.kz/ndfs/infra/tools/deployers/kubernetes-deployer/-/blob/main/deployer/helm/values/example.yaml)). 
+1. Add Gitlab CI Variable `AWS_ECR_REPOSITORY_NAME` in `dev`/`prod` environment for AWS ECR initialization on CI/CD.
+2. Add `helm/values.dev.yaml`/`helm/values.yaml` to set up service configs for Kubernetes deployment (e.g. [example.yaml](https://git.ndfs.kz/ndfs/infra/tools/deployers/kubernetes-deployer/-/blob/main/deployer/helm/values/example.yaml)). 
 3. Add `.gitlab-ci.yml` with the following content to set up CI/CD jobs (visit [gitlab-ci template](https://git.ndfs.kz/ndfs/templates/gitlab-ci/-/blob/main/service-fastapi.gitlab-ci.yml) for more information about CI/CD jobs).
 ```yaml
 include:
@@ -52,7 +52,12 @@ include:
     ref: main
     file: 'service-fastapi.gitlab-ci.yml'
 
-deployer-kubernetes:
+dev-deployer-kubernetes:
+  variables:
+    DEPLOYER_HELM_NAME: '<unqiue project name>'
+    DEPLOYER_HELM_VALUES: '<path to helm values, e.g. helm/values.dev.yaml>'
+
+prod-deployer-kubernetes:
   variables:
     DEPLOYER_HELM_NAME: '<unqiue project name>'
     DEPLOYER_HELM_VALUES: '<path to helm values, e.g. helm/values.yaml>'
