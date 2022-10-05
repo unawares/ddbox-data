@@ -31,6 +31,6 @@ ENV PATH="$ROOT/commands:$PATH"
 
 ADD src $ROOT/src
 
-WORKDIR $ROOT
+WORKDIR $ROOT/src
 
 ENTRYPOINT [ "entrypoint.sh" ]
