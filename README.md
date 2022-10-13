@@ -46,6 +46,7 @@ make docker.compose.up
 1. Add Gitlab CI Variable `AWS_ECR_REPOSITORY_NAME` in `dev`/`prod` environment for AWS ECR initialization on CI/CD.
 2. Add `helm/values.dev.yaml`/`helm/values.yaml` to set up service configs for Kubernetes deployment (e.g. [example.yaml](https://git.ndfs.kz/ndfs/infra/tools/deployers/kubernetes-deployer/-/blob/main/deployer/helm/values/example.yaml)). 
 3. Add `.gitlab-ci.yml` with the following content to set up CI/CD jobs (visit [gitlab-ci template](https://git.ndfs.kz/ndfs/templates/gitlab-ci/-/blob/main/service-fastapi.gitlab-ci.yml) for more information about CI/CD jobs).
+4. Generate `requirements.txt` using the command `make requirements.txt` and commit the file.
 ```yaml
 include:
   - project: 'ndfs/templates/gitlab-ci'
