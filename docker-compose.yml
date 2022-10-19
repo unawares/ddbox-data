@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.10'
 
 
 networks:
@@ -41,7 +41,7 @@ services:
       POSTGRES_DB: "db-name"
       POSTGRES_USER: "db-user"
       POSTGRES_PASSWORD: "db-pass"
-  
+
   app: &app
     <<: *base-image
     hostname: app
@@ -49,7 +49,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - PYTHON_VERSION=3.9
+        - PYTHON_VERSION=3.10
     volumes:
       - ./src:/app/src
     command: start.sh
