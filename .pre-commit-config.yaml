@@ -10,7 +10,7 @@ repos:
         name: generate-requirements
         entry: make requirements.txt
         language: system
-        types: [python]
+        types: [file]
         pass_filenames: false
         stages: [commit]
         files: 'pyproject\.toml|poetry\.lock'
