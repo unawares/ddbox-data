@@ -67,6 +67,7 @@ prod-deployer-kubernetes:
 ## Project structure
 
 - `.flake8` - flake8 is a python tool that glues together pycodestyle, pyflakes, mccabe, and third-party plugins to check the style and quality of some python code.
+- `.mypy.ini` - mypy is an optional static type checker for python that aims to combine the benefits of dynamic (or "duck") typing and static typing.
 - `.gitignore` - a gitignore file specifies intentionally untracked files that git should ignore.
 - `.isort.cfg` - a config file for isort. Isort is a Python utility / library to sort imports alphabetically, and automatically separated into sections and by type.
 - `.pre-commit-config.yaml` - a config file for pre-commit which is installed after `make init`.
