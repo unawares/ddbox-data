@@ -5,7 +5,7 @@ case "$ENV" in
     uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ;;
 "PRODUCTION")
-    gunicorn app.main:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --workers 5  # workers = (2*CPU)+1
+    gunicorn app.main:app --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --workers $GUNICORN_WORKERS --timeout $GUNICORN_TIMEOUT --access-logfile -
     ;;
 *)
     echo "NO ENV SPECIFIED!"
