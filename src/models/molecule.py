@@ -7,9 +7,9 @@ from sqlalchemy import URL, BigInteger, Column, Date, DateTime, Float, ForeignKe
 from sqlalchemy.orm import relationship
 
 molecule_tag_m2m = Table('molecule_tag_m2m', Base.metadata,
-                         Column('molecule_id', settings.SQLALCHEMY_ID_TYPE, ForeignKey('molecules.id')),
-                         Column('tag_id', settings.SQLALCHEMY_ID_TYPE, ForeignKey('tags.id'))
-                         )
+    Column('molecule_id', settings.SQLALCHEMY_ID_TYPE, ForeignKey('molecules.id'), index=True),
+    Column('tag_id', settings.SQLALCHEMY_ID_TYPE, ForeignKey('tags.id'), index=True)
+ )
 
 
 TTagModel = TypeVar('TTagModel', bound='TagModel')
@@ -18,7 +18,7 @@ TTagModel = TypeVar('TTagModel', bound='TagModel')
 class TagModel(Base):
     __tablename__ = 'tags'
 
-    id = Column(settings.SQLALCHEMY_ID_TYPE, primary_key=True)
+    id = Column(settings.SQLALCHEMY_ID_TYPE, primary_key=True, index=True)
     name = Column(String, unique=True)
 
     def __init__(
@@ -40,7 +40,7 @@ TMoleculeModel = TypeVar('TMoleculeModel', bound='MoleculeModel')
 class MoleculeModel(Base):
     __tablename__ = 'molecules'
 
-    id = Column(settings.SQLALCHEMY_ID_TYPE, primary_key=True)
+    id = Column(settings.SQLALCHEMY_ID_TYPE, primary_key=True, index=True)
 
     inchi_key = Column(String)
     inchi = Column(String)

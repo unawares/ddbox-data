@@ -35,4 +35,3 @@ docker.compose.run.bash.%: docker.compose.build ## docker compose run <service-n
 # Flags
 
 .PHONY: *
-
