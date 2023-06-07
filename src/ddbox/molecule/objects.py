@@ -262,7 +262,13 @@ class Molecule:
 
     @property
     def is_valid(self) -> str:
-        return self.mol is not None
+        if self.mol is not None:
+            try:
+                Chem.SanitizeMol(self.mol)
+                return True
+            except ValueError:
+                pass
+        return False
 
     def _fetch_descriptors(self) -> TMolecule:
         if self.is_valid:
