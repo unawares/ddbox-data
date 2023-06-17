@@ -1,3 +1,3 @@
 from utils.patterns import Registry
 
-metrics = Registry()
+metrics_regstry = Registry()

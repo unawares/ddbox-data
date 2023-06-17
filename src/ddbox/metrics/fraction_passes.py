@@ -3,7 +3,7 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-from ddbox.registries import metrics
+from ddbox.registries import metrics_regstry
 from rdkit import Chem
 
 _base_dir = os.path.split(__file__)[0]
@@ -39,7 +39,7 @@ def molecule_passes_filters(molecule,
     return True
 
 
-@metrics.register('fraction_passes')
+@metrics_regstry.register('fraction_passes')
 def fraction_passes(molecules: List[Chem.rdchem.Mol]):
     passes = []
     for molecule in molecules:

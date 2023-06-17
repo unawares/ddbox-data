@@ -4,7 +4,7 @@ import logging
 import sys
 
 from api import fastapi
-from tools import check_metrics, db, upload_into_db
+from tools import db, upload_into_db
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +18,3 @@ if __name__ == '__main__':
         elif sys.argv[1] == 'upload':
             logger.info("Uploading...")
             upload_into_db.upload()
-        elif sys.argv[1] == 'check_metrics':
-            logger.info("Checking...")
-            check_metrics.check()

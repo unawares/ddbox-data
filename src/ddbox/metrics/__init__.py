@@ -5,5 +5,6 @@ from .fraction_unique import *
 from .fraction_valid import *
 from .fragment import *
 from .intdiv import *
+from .novelty import *
 from .scaffold import *
 from .snn import *

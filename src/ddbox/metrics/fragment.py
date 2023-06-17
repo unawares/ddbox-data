@@ -3,7 +3,7 @@ from typing import List
 
 import numpy as np
 from ddbox.metrics.utils import cos_similarity
-from ddbox.registries import metrics
+from ddbox.registries import metrics_regstry
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
@@ -22,7 +22,7 @@ def compute_fragments(molecules):
     return fragments
 
 
-@metrics.register('Frag')
+@metrics_regstry.register('Frag')
 def frag_metric(generated_molecules: List[Chem.rdchem.Mol], reference_molecules: List[Chem.rdchem.Mol]):
     fragments_of_generated = compute_fragments(generated_molecules)
     fragments_of_reference = compute_fragments(reference_molecules)

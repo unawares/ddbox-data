@@ -2,7 +2,7 @@ from collections import Counter
 from typing import List
 
 from ddbox.metrics.utils import cos_similarity
-from ddbox.registries import metrics
+from ddbox.registries import metrics_regstry
 from rdkit import Chem
 from rdkit.Chem.Scaffolds import MurckoScaffold
 
@@ -26,7 +26,7 @@ def compute_scaffolds(molecules, min_rings=2):
     return scaffolds
 
 
-@metrics.register('Scaf')
+@metrics_regstry.register('Scaf')
 def scaf_metric(generated_molecules: List[Chem.rdchem.Mol], reference_molecules: List[Chem.rdchem.Mol]):
     scaffolds_of_generated = compute_scaffolds(generated_molecules)
     scaffolds_of_reference = compute_scaffolds(reference_molecules)

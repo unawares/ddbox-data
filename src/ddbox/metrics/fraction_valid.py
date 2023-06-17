@@ -1,10 +1,10 @@
 from typing import List
 
 from ddbox.metrics.utils import get_molecule_from_smiles_if_valid_or_none
-from ddbox.registries import metrics
+from ddbox.registries import metrics_regstry
 
 
-@metrics.register('fraction_valid')
+@metrics_regstry.register('fraction_valid')
 def fraction_valid(smiles_list: List[str]):
     count = 0
     total = len(smiles_list)
