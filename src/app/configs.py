@@ -24,5 +24,16 @@ class Settings(BaseSettings):
 
     SQLALCHEMY_ID_TYPE = BigInteger
 
+    CELERY_BROKER_URL: str
+    CELERY_RESULT_BACKEND: str
+
+    MINIO_ENDPOINT: str
+    MINIO_ACCESS_KEY: str
+    MINIO_SECRET_KEY: str
+
+    SUBMISSIONS_BUCKET_NAME = 'submissions'
+    SUBMISSION_RESULTS_BUCKET_NAME = 'submission-results'
+    ENCODING = 'utf-8'
+
 
 settings = Settings()

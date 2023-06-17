@@ -1,10 +1,10 @@
 # parser.py
 import csv
 
-from data.moses import moses_data
 from ddbox.molecule.descriptors import MOLECULE_DESCRIPTORS
 from ddbox.molecule.objects import Molecule
 from rdkit import RDLogger
+from tools.data.moses import moses_data
 from tqdm import tqdm
 
 lg = RDLogger.logger()

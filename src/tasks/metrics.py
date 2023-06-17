@@ -1,70 +1,31 @@
+import json
 import logging
+from typing import *
 from typing import List
 
+from app.configs import settings
 from app.db import Session
-from app.fastapi import fastapi
+from celery import shared_task
 from ddbox.metrics import metrics_regstry
 from ddbox.metrics.utils import get_molecule_from_smiles_if_valid_or_none
-from fastapi import HTTPException
-from fastapi.encoders import jsonable_encoder
 from models import MoleculeModel, TagModel
-from utils.responses import SuccessResponce
+from services.s3 import S3ServiceBuilder
 
 logger = logging.getLogger(__name__)
 
 
-@fastapi.get("/moses")
-async def moses_smiles(attributes: str | None = None, tags: str | None = None, offset: int = 0, limit: int = 100):
+@shared_task(default_retry_delay=60, max_retries=2)
+def compute_metrics(submission_id: str, metrics: List[str]):
+    s3_service = S3ServiceBuilder().build()
+
+    filepath = '%s.json' % submission_id
+
+    file_content = s3_service.bucket(settings.SUBMISSIONS_BUCKET_NAME).download_binary(filepath).decode(settings.ENCODING)
+    smiles_list = json.loads(file_content)
+
     session = Session()
-
-    if attributes is not None:
-        attributes = [attribute.strip() for attribute in attributes.split(',') if hasattr(MoleculeModel, attribute.strip())]
-
-    if tags is not None:
-        tags = session.query(TagModel).filter(TagModel.name.in_([tag.strip() for tag in tags.split(',')])).all()
-
-    if attributes is not None and len(attributes) == 0:
-        attributes = None
-
-    if attributes is None:
-        attributes = [column.name for column in MoleculeModel.__table__.columns]
-
-    query = session.query(MoleculeModel).with_entities(*(getattr(MoleculeModel, attribute) for attribute in attributes))
-
-    if tags is not None and len(tags) == 0:
-        tags = None
-
-    if tags is not None:
-        query = query.filter(MoleculeModel.tags.any(TagModel.id.in_([tag.id for tag in tags])))
-
-    molecules = query \
-        .order_by(MoleculeModel.id) \
-        .offset(offset) \
-        .limit(limit) \
-        .all()
-
-    records = [[getattr(molecule, getattr(MoleculeModel, attribute).name) for attribute in attributes] for molecule in molecules]
-
-    session.close()
-
-    return SuccessResponce({'attributes': attributes, 'records': records}).to_response()
-
-
-@fastapi.post("/moses/eval")
-async def moses_smiles(smiles_list: List[str], metrics: List[str] | None = None):
-    session = Session()
-
-    if metrics is not None:
-        metrics = [metric for metric in metrics if metric in metrics_regstry.functions]
 
     tag = session.query(TagModel).filter(TagModel.name == 'test').one()
-
-    if metrics is not None and len(metrics) == 0:
-        metrics = None
-
-    if metrics is None:
-        metrics = metrics_regstry.functions.keys()
-
     query = session.query(MoleculeModel).with_entities(MoleculeModel.smiles)
     query = query.filter(MoleculeModel.tags.any(TagModel.id == tag.id))
 
@@ -138,4 +99,6 @@ async def moses_smiles(smiles_list: List[str], metrics: List[str] | None = None)
         logger.info("Computing: DistributionDifferenceWeight")
         results['DistributionDifferenceWeight'] = metrics_regstry.eval('DistributionDifferenceWeight', molecules, test_molecules)
 
-    return SuccessResponce(results).to_response()
+    filepath = '%s.json' % submission_id
+    file_content = json.dumps(results).encode(settings.ENCODING)
+    s3_service.bucket(settings.SUBMISSION_RESULTS_BUCKET_NAME).upload_binary(filepath, file_content)

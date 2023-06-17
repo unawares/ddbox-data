@@ -4,11 +4,11 @@ import logging
 from typing import *
 
 from app.db import Session
-from data.moses import moses_data
 from ddbox.molecule.descriptors import MOLECULE_DESCRIPTORS
 from ddbox.molecule.objects import Molecule
 from models import MoleculeModel, TagModel
 from rdkit import RDLogger
+from tools.data.moses import moses_data
 from tqdm import tqdm
 from utils.orm import get_or_create
 
