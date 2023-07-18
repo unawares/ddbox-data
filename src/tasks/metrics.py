@@ -10,13 +10,23 @@ from ddbox.metrics import metrics_regstry
 from ddbox.metrics.utils import get_molecule_from_smiles_if_valid_or_none
 from models import MoleculeModel, TagModel
 from services.s3 import S3ServiceBuilder
+from app.celery_base import app
 
 logger = logging.getLogger(__name__)
 
 
-@shared_task(default_retry_delay=60, max_retries=2)
+@app.task
 def compute_metrics(submission_id: str, metrics: List[str]):
     s3_service = S3ServiceBuilder().build()
+
+    s3_service \
+        .bucket(settings.SUBMISSION_RESULTS_BUCKET_NAME) \
+        .upload_binary(
+            '%s.json' % submission_id,
+            json.dumps({
+                'status': 'processing'
+            }).encode(settings.ENCODING)
+        )
 
     filepath = '%s.json' % submission_id
 

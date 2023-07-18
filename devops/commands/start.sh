@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# python main.py check_metrics
-python main.py migrate
+# python3.10 main.py check_metrics
+python3.10 main.py migrate
 
 case "$ENV" in
 "DEV")

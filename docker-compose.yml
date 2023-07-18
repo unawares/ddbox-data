@@ -16,7 +16,7 @@ x-shared-environment: &shared-environment
   CELERY_BROKER_URL: "redis://redis:6379/0"
   CELERY_RESULT_BACKEND: "redis://redis:6379/0"
   CELERY_LOG_LEVEL: "info"
-  CELERY_CONCURENCY: "4"
+  CELERY_CONCURENCY: "1"
   CELERY_FLOWER_USER: "admin"
   CELERY_FLOWER_PASSWORD: "admin"
   MINIO_ROOT_USER: minioadmin
@@ -85,8 +85,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      # platforms:
+      #   - arm64
+        # - linux/amd64
       args:
         - PYTHON_VERSION=3.10
+      shm_size: '2gb'
+    # platform: arm64
     volumes:
       - ./src:/app/src
     command: start.sh
@@ -100,6 +105,7 @@ services:
   app-celery:
     <<: *app
     hostname: app-celery
+    shm_size: '2gb'
     command: start.celery.sh
     ports: []
 

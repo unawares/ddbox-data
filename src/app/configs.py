@@ -31,8 +31,10 @@ class Settings(BaseSettings):
     MINIO_ACCESS_KEY: str
     MINIO_SECRET_KEY: str
 
+    TARGETS_BUCKET_NAME = 'targets'
     SUBMISSIONS_BUCKET_NAME = 'submissions'
     SUBMISSION_RESULTS_BUCKET_NAME = 'submission-results'
+    SUBMISSION_DOCKING_RESULTS_BUCKET_NAME = 'submission-docking-results'
     ENCODING = 'utf-8'
 
 

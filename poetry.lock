@@ -923,6 +923,16 @@ files = [
 ]
 
 [[package]]
+name = "openbabel"
+version = "3.1.1.1"
+description = "Python interface to the Open Babel chemistry library"
+optional = false
+python-versions = "*"
+files = [
+    {file = "openbabel-3.1.1.1.tar.gz", hash = "sha256:bb7f8cad15f3a208f4869d7943cbb14eb7125372eba397588f207f8d19e78373"},
+]
+
+[[package]]
 name = "pandas"
 version = "2.0.1"
 description = "Powerful data structures for data analysis, time series, and statistics"
@@ -1204,7 +1214,7 @@ name = "pycparser"
 version = "2.21"
 description = "C parser in Python"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = "*"
 files = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
     {file = "pycparser-2.21.tar.gz", hash = "sha256:e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"},
@@ -2029,4 +2039,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "041d08645c73341eaa9475e435020d8bc4debea4e8a4b5a719642fd8dfbcc935"
+content-hash = "7a90f76fc60a02ddd560a5f745582f17254e38136daac6ab9f99cabbbdbdd210"

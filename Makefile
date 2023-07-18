@@ -12,7 +12,7 @@ dev.start: install ## start dev server
 	poetry run uvicorn main:app --app-dir=./src --host 0.0.0.0 --port 8000 --reload
 
 requirements.txt: install ## generate requirements.txt
-	poetry export -f requirements.txt --output requirements.txt
+	poetry export --without-hashes -f requirements.txt --output requirements.txt
 
 docker.compose.build: requirements.txt  ## docker compose build
 	docker compose build

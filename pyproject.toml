@@ -26,6 +26,7 @@ flower = "^1.2.0"
 gevent = "^22.10.2"
 redis = "^4.5.5"
 minio = "^7.1.15"
+openbabel = "^3.1.1.1"
 
 
 [build-system]
