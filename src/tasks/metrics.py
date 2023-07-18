@@ -3,6 +3,7 @@ import logging
 from typing import *
 from typing import List
 
+from app.celery_base import app
 from app.configs import settings
 from app.db import Session
 from celery import shared_task
@@ -10,7 +11,6 @@ from ddbox.metrics import metrics_regstry
 from ddbox.metrics.utils import get_molecule_from_smiles_if_valid_or_none
 from models import MoleculeModel, TagModel
 from services.s3 import S3ServiceBuilder
-from app.celery_base import app
 
 logger = logging.getLogger(__name__)
 

@@ -2,12 +2,11 @@ import json
 import logging
 from typing import List, Tuple
 
-from app.configs import settings
-from services.s3 import S3ServiceBuilder
 from app.celery_base import app
+from app.configs import settings
 from ddbox.docking.vina import generate_pbdqt_file_from_receptor_id, generate_pdbqt_file_from_smiles, vina_docking
+from services.s3 import S3ServiceBuilder
 from utils.dirs import delete_if_exists
-
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +37,7 @@ def dock(submission_id: str, smiles_list: List[str], receptor_ids: List[str], ce
 
         center = centers[i]
         size = sizes[i]
-        
+
         for smiles in smiles_list:
             logger.info("Docking %s to receptor %s" % (smiles, receptor_ids[i]))
 

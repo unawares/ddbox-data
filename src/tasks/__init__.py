@@ -1,2 +1,2 @@
-from .metrics import *
 from .docking import *
+from .metrics import *

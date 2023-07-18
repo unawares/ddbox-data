@@ -9,8 +9,8 @@ from ddbox.metrics import metrics_regstry
 from ddbox.metrics.utils import get_molecule_from_smiles_if_valid_or_none
 from models import MoleculeModel, TagModel
 from services.s3 import S3ServiceBuilder
-from tasks.metrics import compute_metrics
 from tasks.docking import dock
+from tasks.metrics import compute_metrics
 from utils.random import get_next_submission_id
 from utils.responses import SuccessResponce
 
@@ -61,7 +61,7 @@ async def submission_result_moses(submission_id: str):
 @fastapi.post("/submission/docking")
 async def submission_docking(
     smiles_list: List[str],
-    receptor_ids: List[str], 
+    receptor_ids: List[str],
     centers: List[Tuple[float, float, float]],
     sizes: List[Tuple[float, float, float]],
 ):

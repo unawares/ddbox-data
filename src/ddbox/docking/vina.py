@@ -1,13 +1,12 @@
 import logging
+import os
+from subprocess import PIPE, Popen
 from typing import List, Tuple
 
 from app.configs import settings
 from services.s3 import S3ServiceBuilder
-from subprocess import Popen, PIPE
-import os
-from utils.random import get_random_uuid_hex
 from utils.dirs import delete_if_exists
-
+from utils.random import get_random_uuid_hex
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +21,7 @@ def generate_pdbqt_file_from_smiles(smiles: str):
         '-o', 'pdbqt',
         '-O', filepath,
     ]
-    
+
     p = Popen(command, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate()
     if not ('1 molecule converted' in output.decode() or '1 molecule converted' in err.decode()):
