@@ -27,6 +27,9 @@ gevent = "^22.10.2"
 redis = "^4.5.5"
 minio = "^7.1.15"
 openbabel = "^3.1.1.1"
+fastapi-cache2 = "^0.2.1"
+cryptography = "^41.0.2"
+torchvision = "^0.15.2"
 
 
 [build-system]

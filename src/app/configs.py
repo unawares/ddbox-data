@@ -31,6 +31,8 @@ class Settings(BaseSettings):
     MINIO_ACCESS_KEY: str
     MINIO_SECRET_KEY: str
 
+    REDIS_CACHE: str
+
     TARGETS_BUCKET_NAME = 'targets'
     SUBMISSIONS_BUCKET_NAME = 'submissions'
     SUBMISSION_RESULTS_BUCKET_NAME = 'submission-results'

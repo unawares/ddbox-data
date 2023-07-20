@@ -24,6 +24,7 @@ x-shared-environment: &shared-environment
   MINIO_ENDPOINT: minio:9000
   MINIO_ACCESS_KEY: minioadmin
   MINIO_SECRET_KEY: minioadmin
+  REDIS_CACHE: 'redis://redis:6379'
 
 
 x-base-image: &base-image
