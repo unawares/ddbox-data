@@ -7,6 +7,8 @@ from app.db import Session
 from app.fastapi import fastapi
 from ddbox.metrics import metrics_regstry
 from ddbox.metrics.utils import get_molecule_from_smiles_if_valid_or_none
+from fastapi import HTTPException
+from minio.error import S3Error
 from models import MoleculeModel, TagModel
 from services.s3 import S3ServiceBuilder
 from tasks.docking import dock
@@ -17,8 +19,8 @@ from utils.responses import SuccessResponce
 logger = logging.getLogger(__name__)
 
 
-@fastapi.post("/submission/moses")
-async def submission_moses(smiles_list: List[str], metrics: List[str] | None = None):
+@fastapi.post("/submission/metrics/moses/")
+async def submission_metrics_moses(smiles_list: List[str], metrics: List[str] | None = None):
     s3_service = S3ServiceBuilder().build()
 
     submission_id = get_next_submission_id()
@@ -47,18 +49,22 @@ async def submission_moses(smiles_list: List[str], metrics: List[str] | None = N
     }).to_response()
 
 
-@fastapi.get("/submission/result/moses")
-async def submission_result_moses(submission_id: str):
+@fastapi.get("/submission/metrics/result/moses/")
+async def submission_metrics_moses_result(submission_id: str):
     s3_service = S3ServiceBuilder().build()
 
     filepath = '%s.json' % submission_id
 
-    file_content = s3_service.bucket(settings.SUBMISSION_RESULTS_BUCKET_NAME).download_binary(filepath).decode(settings.ENCODING)
-    data = json.loads(file_content)
-    return SuccessResponce(data).to_response()
+    try:
+        file_content = s3_service.bucket(settings.SUBMISSION_RESULTS_BUCKET_NAME).download_binary(filepath).decode(settings.ENCODING)
+        data = json.loads(file_content)
+        return SuccessResponce(data).to_response()
+    except S3Error as err:
+        logger.warn(err)
+        raise HTTPException(status_code=404, detail="Not found")
 
 
-@fastapi.post("/submission/docking")
+@fastapi.post("/submission/docking/")
 async def submission_docking(
     smiles_list: List[str],
     receptor_ids: List[str],
@@ -84,12 +90,16 @@ async def submission_docking(
     }).to_response()
 
 
-@fastapi.get("/submission/result/docking")
+@fastapi.get("/submission/result/docking/")
 async def submission_result_docking(submission_id: str):
     s3_service = S3ServiceBuilder().build()
 
     filepath = '%s.json' % submission_id
 
-    file_content = s3_service.bucket(settings.SUBMISSION_RESULTS_BUCKET_NAME).download_binary(filepath).decode(settings.ENCODING)
-    data = json.loads(file_content)
-    return SuccessResponce(data).to_response()
+    try:
+        file_content = s3_service.bucket(settings.SUBMISSION_RESULTS_BUCKET_NAME).download_binary(filepath).decode(settings.ENCODING)
+        data = json.loads(file_content)
+        return SuccessResponce(data).to_response()
+    except S3Error as err:
+        logger.warn(err)
+        raise HTTPException(status_code=404, detail="Not found")

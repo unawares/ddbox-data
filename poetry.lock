@@ -553,6 +553,29 @@ test = ["pretend", "pytest (>=6.2.0)", "pytest-benchmark", "pytest-cov", "pytest
 test-randomorder = ["pytest-randomly"]
 
 [[package]]
+name = "ddbox"
+version = "0.1.5"
+description = ""
+optional = false
+python-versions = ">=3.10,<4.0"
+files = [
+    {file = "ddbox-0.1.5-py3-none-any.whl", hash = "sha256:bafe24a067574a2a58fc4f834d9bc9cdcb4252a38093aae5668b4e64eed8930d"},
+    {file = "ddbox-0.1.5.tar.gz", hash = "sha256:2214beff7aedd58419e3770a1ebf901cd75ab978e78044b08cd70a4966ed2973"},
+]
+
+[package.dependencies]
+cryptography = ">=41.0.2,<42.0.0"
+fcd-torch = ">=1.0.7,<2.0.0"
+openbabel = ">=3.1.1.1,<4.0.0.0"
+pandas = ">=2.0.1,<3.0.0"
+pre-commit = ">=2.20.0,<3.0.0"
+rdkit = ">=2023.3.1,<2024.0.0"
+requests = ">=2.30.0,<3.0.0"
+torchvision = ">=0.15.2,<0.16.0"
+tqdm = ">=4.65.0,<5.0.0"
+urllib3 = "1.26.15"
+
+[[package]]
 name = "distlib"
 version = "0.3.6"
 description = "Distribution utilities"
@@ -887,6 +910,15 @@ files = [
     {file = "gunicorn-20.1.0-py3-none-any.whl", hash = "sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e"},
     {file = "gunicorn-20.1.0.tar.gz", hash = "sha256:e0a968b5ba15f8a328fdfd7ab1fcb5af4470c28aaf7e55df02a99bc13138e6e8"},
 ]
+
+[package.dependencies]
+setuptools = ">=3.0"
+
+[package.extras]
+eventlet = ["eventlet (>=0.24.1)"]
+gevent = ["gevent (>=1.4.0)"]
+setproctitle = ["setproctitle"]
+tornado = ["tornado (>=0.2)"]
 
 [[package]]
 name = "h11"
@@ -1609,7 +1641,7 @@ name = "pycparser"
 version = "2.21"
 description = "C parser in Python"
 optional = false
-python-versions = "*"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
     {file = "pycparser-2.21.tar.gz", hash = "sha256:e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"},
@@ -2570,4 +2602,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a20469bcd5a758de145e7b758eec7837a889efe1fb7ec4de6420826edba95d76"
+content-hash = "53555908e29bf71174cef13a79e6b8c370cfaf34bf13b6213de7de5e43c75a03"

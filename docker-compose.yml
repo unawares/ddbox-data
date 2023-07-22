@@ -58,6 +58,8 @@ services:
     hostname: postgres
     volumes:
       - ./tmp/data/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_DB: "db-name"
       POSTGRES_USER: "db-user"
@@ -95,6 +97,7 @@ services:
     # platform: arm64
     volumes:
       - ./src:/app/src
+      - ../dataset:/dataset
     command: start.sh
     ports:
       - 8000:8000

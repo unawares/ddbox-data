@@ -39,5 +39,7 @@ class Settings(BaseSettings):
     SUBMISSION_DOCKING_RESULTS_BUCKET_NAME = 'submission-docking-results'
     ENCODING = 'utf-8'
 
+    TEMP_DIR: str = '/tmp/ddbox-data/docking/'
+
 
 settings = Settings()

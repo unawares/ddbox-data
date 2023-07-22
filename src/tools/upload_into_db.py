@@ -3,12 +3,12 @@ import csv
 import logging
 from typing import *
 
+import pandas as pd
 from app.db import Session
 from ddbox.molecule.descriptors import MOLECULE_DESCRIPTORS
 from ddbox.molecule.objects import Molecule
 from models import MoleculeModel, TagModel
 from rdkit import RDLogger
-from tools.data.moses import moses_data
 from tqdm import tqdm
 from utils.orm import get_or_create
 
@@ -22,37 +22,38 @@ def upload():
 
     lg.setLevel(RDLogger.CRITICAL)
 
-    md = moses_data()
+    data = pd.read_csv('../../dataset/data.csv', header=None)
 
-    smiles_list = md.pd['SMILES'].to_list()[STARTINDEX:]
-    split_list = md.pd['SPLIT'].to_list()[STARTINDEX:]
+    data = data[STARTINDEX:]
 
-    molecules: List[Molecule] = []
-    splits: List[str] = []
+    size = len(data)
+
+    rows: List[List] = []
 
     BATCH_SIZE = 1000
 
     def append():
-        nonlocal molecules, splits
+        nonlocal rows
 
         session = Session()
 
-        tags = {}
+        tags = {
+            'moses': get_or_create(session, TagModel, name='moses')
+        }
 
-        for i in range(len(molecules)):
-            if splits[i] not in tags:
-                tags[splits[i]] = get_or_create(session, TagModel, name=splits[i])
+        for i in range(len(rows)):
+            row = rows[i]
+            if row[0] not in tags:
+                tags[row[0]] = get_or_create(session, TagModel, name=row[0])
 
-            tag_objs = [tags.get(splits[i])]
-
-            mol = molecules[i]
+            tag_objs = [tags.get(row[0]), tags.get('moses')]
 
             molecule_obj = MoleculeModel(
-                inchi_key=mol.inchi_key,
-                inchi=mol.inchi,
-                smiles=mol.smiles,
+                inchi_key=row[1],
+                inchi=row[2],
+                smiles=row[3],
                 **{
-                    key: getattr(mol.desciptor, key) for key in MOLECULE_DESCRIPTORS
+                    key: row[4 + index] for index, key in enumerate(MOLECULE_DESCRIPTORS)
                 },
                 tags=tag_objs,
             )
@@ -61,17 +62,14 @@ def upload():
         session.commit()
         session.close()
 
-        molecules = []
-        splits = []
+        rows = []
 
-    for index, smiles in enumerate(smiles_list):
-        molecule = Molecule().from_smiles(smiles)
-        molecules.append(molecule)
-        splits.append(split_list[index])
-
-        if len(molecules) == BATCH_SIZE:
+    for index, row in data.iterrows():
+        row = row.tolist()
+        rows.append(row)
+        if len(rows) == BATCH_SIZE:
             append()
-            logger.info("Uploaded: %s/%s" % (index + 1, len(smiles_list)))
+            logger.info("Uploaded: %s/%s" % (index + 1, size))
 
     append()
-    logger.info("Uploaded: %s/%s" % (len(smiles_list), len(smiles_list)))
+    logger.info("Uploaded: %s/%s" % (size, size))
