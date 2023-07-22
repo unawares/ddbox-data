@@ -76,6 +76,15 @@ def dock(submission_id: str, smiles_list: List[str], receptor_ids: List[str], ce
                     size,
                 )
 
+                with open(receptor_pdbqt_filepath, 'r', encoding='utf-8') as f:
+                    receptor_pdbqt = f.read()
+
+                with open(ligand_pdbqt_filepath, 'r', encoding='utf-8') as f:
+                    ligand_pdbqt = f.read()
+
+                with open(receptor_config_filepath, 'r', encoding='utf-8') as f:
+                    receptor_conf = f.read()
+
                 with open(result_filepath, 'r', encoding='utf-8') as f:
                     vina_pdbqt = f.read()
 
@@ -83,6 +92,9 @@ def dock(submission_id: str, smiles_list: List[str], receptor_ids: List[str], ce
                     'smiles': smiles,
                     'receptor_id': receptor_ids[i],
                     'vina_pdbqt': vina_pdbqt,
+                    'receptor_pdbqt': receptor_pdbqt,
+                    'receptor_conf': receptor_conf,
+                    'ligand_pdbqt': ligand_pdbqt,
                 })
 
     filepath = '%s.json' % submission_id
